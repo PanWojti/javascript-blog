@@ -10,9 +10,9 @@ const titleClickHandler = function(event){
   /* [DONE] remove class 'active' from all article links  */
   const activeLinks = document.querySelectorAll('.titles a.active');
 
-for(let activeLink of activeLinks){
-  activeLink.classList.remove('active');
-}
+  for(let activeLink of activeLinks){
+    activeLink.classList.remove('active');
+  }
 
   /* [IN PROGRESS] add class 'active' to the clicked link */
   console.log('clickedElement:', clickedElement);
@@ -37,6 +37,37 @@ for(let activeLink of activeLinks){
 
 const links = document.querySelectorAll('.titles a');
 
-for(let link of links){
-  link.addEventListener('click', titleClickHandler);
+  for(let link of links){
+    link.addEventListener('click', titleClickHandler);
+  }
+
+  const generateTitleLinks = function (event) {
+    console.log("function generateTitleLinks executed");
+
+  /* [DONE] Remove links in left column*/
+  function clearTitles(){
+	  document.querySelector(".titles").innerHTML = '';
+    console.log("clearTitles executed");
+  }
+  clearTitles();
+
+  /* Read every post id and save it to constant*/
+
+
+  /* Find element with title and save title to constant*/
+
+
+  /* create link html code and save it to constant*/
+
+
+  /* put created link html code to column on the left*/
+
+
+
+}
+
+const tags = document.querySelectorAll('.tags a');
+
+for(let tag of tags){
+  tag.addEventListener('click', generateTitleLinks);
 }
