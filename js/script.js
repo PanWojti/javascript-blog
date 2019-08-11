@@ -43,43 +43,44 @@ const links = document.querySelectorAll('.titles a');
 
 
 
+  const optArticleSelector = '.post',
+        optTitleSelector = '.post-title',
+        optTitleListSelector = '.titles';
+
   const generateTitleLinks = function (event) {
+    const clickedElement = this;
     console.log("function generateTitleLinks executed");
+    console.log(clickedElement);
+    /* remove contents of titleList */
+    const titleList = document.querySelector(optTitleListSelector);
+    console.log(titleList);
+    titleList.innerHTML = '';
 
-  /* [DONE] Remove links in left column*/
-  const clearTitles = function (){
-	  document.querySelector(".titles").innerHTML = '';
-    console.log("clearTitles executed");
-  }
-  clearTitles();
+    /* for each article */
+    const articles = document.querySelectorAll(optArticleSelector);
+    console.log(articles);
 
-  /* Read every post id and save it to constant*/
-  const posts = document.querySelectorAll(".posts .post");
-  console.log("posts Id loaded");
-  console.log(posts);
+    let html = '';
 
-  let postsId = [];
-  for (let post of posts) {
-    postsId.push(post.getAttribute("id"));
-  }
-  console.log(postsId);
-  /* Find element with title and save title to constant*/
-  const titles = document.querySelectorAll(".posts .post-title");
-  console.log("posts title loaded");
-  console.log(titles);
+    for (let article of articles) {
+    /* get the article id */
+    const articleId = article.getAttribute('id');
 
-  let titlesHtml = [];
-  for (let title of titles) {
-    titlesHtml.push(title.innerHTML);
-  }
-  console.log(titlesHtml);
+    /* find the title element */
+    const articleTitle = article.querySelector(optTitleSelector).innerHTML;
 
-  /* create link html code and save it to constant*/
+    /* get the title from the title element */
 
 
-  /* put created link html code to column on the left*/
+    /* create HTML of the link */
+    const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
+    console.log(linkHTML);
 
+    /* insert link into titleList */
+    html = html + linkHTML;
 
+    }
+  titleList.innerHTML = html;
 
 }
 
