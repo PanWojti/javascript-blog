@@ -41,21 +41,38 @@ const links = document.querySelectorAll('.titles a');
     link.addEventListener('click', titleClickHandler);
   }
 
+
+
   const generateTitleLinks = function (event) {
     console.log("function generateTitleLinks executed");
 
   /* [DONE] Remove links in left column*/
-  function clearTitles(){
+  const clearTitles = function (){
 	  document.querySelector(".titles").innerHTML = '';
     console.log("clearTitles executed");
   }
   clearTitles();
 
   /* Read every post id and save it to constant*/
+  const posts = document.querySelectorAll(".posts .post");
+  console.log("posts Id loaded");
+  console.log(posts);
 
-
+  let postsId = [];
+  for (let post of posts) {
+    postsId.push(post.getAttribute("id"));
+  }
+  console.log(postsId);
   /* Find element with title and save title to constant*/
+  const titles = document.querySelectorAll(".posts .post-title");
+  console.log("posts title loaded");
+  console.log(titles);
 
+  let titlesHtml = [];
+  for (let title of titles) {
+    titlesHtml.push(title.innerHTML);
+  }
+  console.log(titlesHtml);
 
   /* create link html code and save it to constant*/
 
@@ -67,7 +84,11 @@ const links = document.querySelectorAll('.titles a');
 }
 
 const tags = document.querySelectorAll('.tags a');
-
 for(let tag of tags){
   tag.addEventListener('click', generateTitleLinks);
+}
+
+const authors = document.querySelectorAll('.authors a');
+for(let author of authors){
+  author.addEventListener('click', generateTitleLinks);
 }
