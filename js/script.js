@@ -127,7 +127,7 @@ function generateAuthors(){
     /* find tags wrapper */
     const authorsList = article.querySelector(optArticleAuthorSelector);
     /* make html variable with empty string */
-    let html = ' ';
+    let html = '';
     /* get tags from data-tags attribute */
     const dataAuthors = article.getAttribute('data-author');
     /* START LOOP: for each tag */
