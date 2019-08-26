@@ -43,3 +43,15 @@ body { background: #fff; font-family: "Source Sans Pro", sans-serif; color: #444
 .post-tags { display: -ms-flexbox; display: flex; }
 
 .post-tags p { margin: 0 10px 0 0; }
+
+a.tag-size-1 { font-size: 15px; text-decoration: none; color: #800000; height: 30px; }
+
+a.tag-size-2 { font-size: 22px; text-decoration: none; color: #006400; height: 30px; }
+
+a.tag-size-3 { font-size: 28px; text-decoration: none; color: #000800; height: 30px; }
+
+a.tag-size-4 { font-size: 34px; text-decoration: none; color: #800080; height: 30px; }
+
+a.tag-size-5 { font-size: 40px; text-decoration: none; color: #FF4500; height: 30px; }
+
+.tags li { height: 30px; }

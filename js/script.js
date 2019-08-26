@@ -32,16 +32,15 @@ const titleClickHandler = function(event){
   targetArticle.classList.add('active');
 };
 
-
-
-
-
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags.list';
+  optTagsListSelector = '.tags.list',
+  optCloudClassCount = 5,
+  optCloudClassPrefix = 'tag-size-',
+  optAuthorsListSelector = '.authors.list';
 
 function generateTitleLinks(customSelector = '') {
   const clickedElement = this;
@@ -91,8 +90,40 @@ for(let author of authors){
   author.addEventListener('click', generateTitleLinks);
 }
 
+function calculateTagsParams(tags){
+  /* Create object that will contain min and max value of tags occurence */
+  let params = {
+    min: 999999,
+    max: 0
+  }
+  /* Start loop: for all tags in allTags: */
+  for(let tag in tags){
+    params.max = Math.max(tags[tag], params.max);
+    params.min = Math.min(tags[tag], params.min);
+  }
+  return params;
+}
+
+function calculateTagClass(count, params){
+
+  /*  */
+  const normalizedCount = count - params.min;
+  /*  */
+  const normalizedMax = params.max - params.min;
+  /*  */
+  const percentage = normalizedCount / normalizedMax;
+  /*  */
+  const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1 );
+  /*  */
+  const classNumberHTML = optCloudClassPrefix + classNumber;
+  /*  */
+  return classNumberHTML;
+}
+
 function generateTags(){
+
   /* [NEW] create a new variable allTags with an empty object */
+
   let allTags = {};
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
@@ -109,7 +140,7 @@ function generateTags(){
     /* START LOOP: for each tag */
     for (let tag of dataTagsArray) {
       /* generate HTML of the link */
-      linkHTML = '<li><a href="#tag-' + tag + '">'+tag+'</a></li><span> </span>';
+      const linkHTML = '<li><a href="#tag-' + tag + '">'+tag+'</a></li><span> </span>';
       /* add generated code to html variable */
       html = html + linkHTML;
       /* [NEW] check if this link is NOT already in allTags */
@@ -129,12 +160,12 @@ function generateTags(){
   const tagList = document.querySelector('.tags');
 
   /* [NEW] create variable for all links HTML code */
+  const tagsParams = calculateTagsParams(allTags);
   let allTagsHTML = '';
-
   /* [NEW] START LOOP: for each tag in allTags: */
   for(let tag in allTags){
     /* [NEW] generate code of a link and add it to allTagsHTML: */
-    allTagsHTML += '<li><a href="#">' + tag + ' (' + allTags[tag] + ') </li><a>';
+    allTagsHTML += '<li><a href="#" class="' + calculateTagClass(allTags[tag], tagsParams) + '">' + tag + ' <a></li><span> </span>';
   }
   /* [NEW] End LOOP: for each tag in allTags: */
 
@@ -145,6 +176,8 @@ function generateTags(){
 generateTags();
 
 function generateAuthors(){
+  /* create a new variable allAuthors with an empty object */
+  let allAuthors = {};
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
   /* START LOOP: for every article: */
@@ -153,20 +186,38 @@ function generateAuthors(){
     const authorsList = article.querySelector(optArticleAuthorSelector);
     /* make html variable with empty string */
     let html = '';
+    let htmlRight = '';
     /* get tags from data-tags attribute */
     const dataAuthors = article.getAttribute('data-author');
-    /* START LOOP: for each tag */
-    /*for (let tag of dataTagsArray) {
-      /* generate HTML of the link */
-    html = html + '<span>by </span>' + '<a href="#author-' + dataAuthors + '">' + dataAuthors + '</a>';
-      /* add generated code to html variable */
-
-    /* END LOOP: for each tag */
-    /*}
-    /* insert HTML of all the links into the tags wrapper */
+    /* generate HTML of the link */
+    const linkHTML = '<span>by </span>' + '<a href="#author-' + dataAuthors + '">' + dataAuthors + '</a>';
+    const linkHTMLRight = '<a href="#author-' + dataAuthors + '">' + dataAuthors + '</a><br>';
+    /* add generated code to html variable */
+    html = html + linkHTML;
+    htmlRight = htmlRight + linkHTMLRight;
+    /* insert HTML of all the links into the authors wrapper */
     authorsList.innerHTML = html;
+    /*  */
+    if(!allAuthors.hasOwnProperty(dataAuthors)) {
+        /* [NEW] add generated code to allAuthors object */
+        allAuthors[dataAuthors] = 1;
+      } else {
+        allAuthors[dataAuthors]++;
+      }
+    /*  */
+
+    /*  */
+
   /* END LOOP: for every article: */
   }
+  console.log('allAuthors: ' + allAuthors);
+  const authorsLinksList = document.querySelector(optAuthorsListSelector);
+  let allAuthorsHTML = '';
+  for(let author in allAuthors){
+    /* [NEW] generate code of a link and add it to allTagsHTML: */
+    allAuthorsHTML += '<li><a href="#">' + author + '<a></li>';
+  }
+  authorsLinksList.innerHTML = allAuthorsHTML;
 }
 
 generateAuthors();
