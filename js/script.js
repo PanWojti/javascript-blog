@@ -32,24 +32,27 @@ const titleClickHandler = function(event){
   targetArticle.classList.add('active');
 };
 
-const optArticleSelector = '.post',
-  optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles',
-  optArticleTagsSelector = '.post-tags .list',
-  optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags.list',
-  optCloudClassCount = 5,
-  optCloudClassPrefix = 'tag-size-',
-  optAuthorsListSelector = '.authors.list';
+const opt = {
+  articleSelector: '.post',
+  titleSelector: '.post-title',
+  titleListSelector: '.titles',
+  articleTagsSelector: '.post-tags .list',
+  articleAuthorSelector: '.post-author',
+  tagsListSelector: '.tags.list',
+  cloudClassCount: 5,
+  cloudClassPrefix: 'tag-size-',
+  authorsListSelector: '.authors.list'
+};
+
 
 function generateTitleLinks(customSelector = '') {
   const clickedElement = this;
   /* remove contents of titleList */
-  const titleList = document.querySelector(optTitleListSelector);
+  const titleList = document.querySelector(opt.titleListSelector);
   titleList.innerHTML = '';
 
   /* for each article */
-  const articles = document.querySelectorAll(optArticleSelector + customSelector);
+  const articles = document.querySelectorAll(opt.articleSelector + customSelector);
 
   let html = '';
 
@@ -58,7 +61,7 @@ function generateTitleLinks(customSelector = '') {
     const articleId = article.getAttribute('id');
 
     /* find the title element */
-    const articleTitle = article.querySelector(optTitleSelector).innerHTML;
+    const articleTitle = article.querySelector(opt.titleSelector).innerHTML;
 
     /* get the title from the title element */
 
@@ -119,9 +122,9 @@ function calculateTagClass(count, params){
   /* calculate what percentage of the range is the distance from min tag count to current tag count */
   const percentage = normalizedCount / normalizedMax;
   /* calculate class number of current tag */
-  const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1 );
+  const classNumber = Math.floor( percentage * (opt.cloudClassCount - 1) + 1 );
   /* make html code by adding prefix to class number */
-  const classNumberHTML = optCloudClassPrefix + classNumber;
+  const classNumberHTML = opt.cloudClassPrefix + classNumber;
   /* return class number of current tag */
   return classNumberHTML;
 }
@@ -132,11 +135,11 @@ function generateTags(){
   /* create a new variable allTags with an empty object, that will store tags and their counts */
   let allTags = {};
   /* find all articles */
-  const articles = document.querySelectorAll(optArticleSelector);
+  const articles = document.querySelectorAll(opt.articleSelector);
   /* START LOOP: for every article: */
   for (let article of articles) {
     /* find tags wrapper in each article*/
-    const tagsList = article.querySelector(optArticleTagsSelector);
+    const tagsList = article.querySelector(opt.articleTagsSelector);
     /* make html variable with empty string */
     let html = '';
     /* get tags from data-tags attribute of each article*/
@@ -165,7 +168,7 @@ function generateTags(){
   /* END LOOP: for every article: */
   }
   /* Find list of tags in right column */
-  const tagList = document.querySelector('.tags');
+  const tagList = document.querySelector(opt.tagsListSelector);
 
   /* Create variable for all links HTML code */
   const tagsParams = calculateTagsParams(allTags);
@@ -189,11 +192,11 @@ function generateAuthors(){
   /* create a new variable allAuthors with an empty object */
   let allAuthors = {};
   /* find all articles */
-  const articles = document.querySelectorAll(optArticleSelector);
+  const articles = document.querySelectorAll(opt.articleSelector);
   /* START LOOP: for every article: */
   for (let article of articles) {
     /* find tags wrapper */
-    const authorsList = article.querySelector(optArticleAuthorSelector);
+    const authorsList = article.querySelector(opt.articleAuthorSelector);
     /* make html variable with empty string */
     let html = '';
     /* make htmlRight variable with empty string */
@@ -220,7 +223,7 @@ function generateAuthors(){
   /* END LOOP: for every article: */
   }
   /* find right column authors list wrapper and create constant authorsLinksList  */
-  const authorsLinksList = document.querySelector(optAuthorsListSelector);
+  const authorsLinksList = document.querySelector(opt.authorsListSelector);
   /* create allAuthorsHTML as an empty string  */
   let allAuthorsHTML = '';
   /* START LOOP: for every author: */
