@@ -90,50 +90,56 @@ for(let author of authors){
   author.addEventListener('click', generateTitleLinks);
 }
 
+/* FUNCTION to check and return highest and lowest value of tag count to calculate proper tag classes */
+
 function calculateTagsParams(tags){
   /* Create object that will contain min and max value of tags occurence */
   let params = {
     min: 999999,
     max: 0
   }
-  /* Start loop: for all tags in allTags: */
+  /* Start loop: for each tag in tags: */
   for(let tag in tags){
+    /* max value of params take the higher value from pair current params.max and current tag being checked: */
     params.max = Math.max(tags[tag], params.max);
+    /* min value of params take the lower value from pair current params.min and current tag being checked: */
     params.min = Math.min(tags[tag], params.min);
   }
   return params;
 }
 
+/* FUNCTION that calculates tag class number based on min and max tag count (params) and current tag count */
+
 function calculateTagClass(count, params){
 
-  /*  */
+  /* calculate difference between current tag count and min tag count */
   const normalizedCount = count - params.min;
-  /*  */
+  /* calculate range between max tag count and min tag count */
   const normalizedMax = params.max - params.min;
-  /*  */
+  /* calculate what percentage of the range is the distance from min tag count to current tag count */
   const percentage = normalizedCount / normalizedMax;
-  /*  */
+  /* calculate class number of current tag */
   const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1 );
-  /*  */
+  /* make html code by adding prefix to class number */
   const classNumberHTML = optCloudClassPrefix + classNumber;
-  /*  */
+  /* return class number of current tag */
   return classNumberHTML;
 }
 
+/* FUNCTION to generate tags links under articles and tags links in right column */
+
 function generateTags(){
-
-  /* [NEW] create a new variable allTags with an empty object */
-
+  /* create a new variable allTags with an empty object, that will store tags and their counts */
   let allTags = {};
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
   /* START LOOP: for every article: */
   for (let article of articles) {
-    /* find tags wrapper */
+    /* find tags wrapper in each article*/
     const tagsList = article.querySelector(optArticleTagsSelector);
     /* make html variable with empty string */
     let html = '';
-    /* get tags from data-tags attribute */
+    /* get tags from data-tags attribute of each article*/
     const dataTags = article.getAttribute('data-tags');
     /* split tags into array */
     const dataTagsArray = dataTags.split(' ');
@@ -143,23 +149,25 @@ function generateTags(){
       const linkHTML = '<li><a href="#tag-' + tag + '">'+tag+'</a></li><span> </span>';
       /* add generated code to html variable */
       html = html + linkHTML;
-      /* [NEW] check if this link is NOT already in allTags */
+      /* Check if this link is NOT already in allTags */
       if(!allTags.hasOwnProperty(tag)){
-        /* [NEW] add tag to allTags object */
+        /* Add tag to allTags object */
         allTags[tag] = 1;
-      } else {
+      }
+        /* Else increase its value */
+      else {
         allTags[tag]++;
       }
     /* END LOOP: for each tag */
     }
-    /* insert HTML of all the links into the tags wrapper */
+    /* insert HTML of all the links into the tags wrapper of each article*/
     tagsList.innerHTML = html;
   /* END LOOP: for every article: */
   }
-  /* [NEW] find list of tags in right column */
+  /* Find list of tags in right column */
   const tagList = document.querySelector('.tags');
 
-  /* [NEW] create variable for all links HTML code */
+  /* Create variable for all links HTML code */
   const tagsParams = calculateTagsParams(allTags);
   let allTagsHTML = '';
   /* [NEW] START LOOP: for each tag in allTags: */
@@ -167,13 +175,15 @@ function generateTags(){
     /* [NEW] generate code of a link and add it to allTagsHTML: */
     allTagsHTML += '<li><a href="#" class="' + calculateTagClass(allTags[tag], tagsParams) + '">' + tag + ' <a></li><span> </span>';
   }
-  /* [NEW] End LOOP: for each tag in allTags: */
+  /* End LOOP: for each tag in allTags: */
 
-  /* [NEW] add html from allTagsHTML to tagList: */
+  /* Add html from allTagsHTML to tagList: */
   tagList.innerHTML = allTagsHTML;
 }
 
 generateTags();
+
+/* FUNCTION to generate authors links in  articles and authors links in right column */
 
 function generateAuthors(){
   /* create a new variable allAuthors with an empty object */
@@ -186,37 +196,39 @@ function generateAuthors(){
     const authorsList = article.querySelector(optArticleAuthorSelector);
     /* make html variable with empty string */
     let html = '';
+    /* make htmlRight variable with empty string */
     let htmlRight = '';
     /* get tags from data-tags attribute */
     const dataAuthors = article.getAttribute('data-author');
-    /* generate HTML of the link */
+    /* generate HTML of the link to be put in the article*/
     const linkHTML = '<span>by </span>' + '<a href="#author-' + dataAuthors + '">' + dataAuthors + '</a>';
+    /* generate HTML of the link to be put in the right column*/
     const linkHTMLRight = '<a href="#author-' + dataAuthors + '">' + dataAuthors + '</a><br>';
     /* add generated code to html variable */
     html = html + linkHTML;
+
     htmlRight = htmlRight + linkHTMLRight;
     /* insert HTML of all the links into the authors wrapper */
     authorsList.innerHTML = html;
-    /*  */
+    /* check if author of current article is already an element of allAuthors object */
     if(!allAuthors.hasOwnProperty(dataAuthors)) {
         /* [NEW] add generated code to allAuthors object */
         allAuthors[dataAuthors] = 1;
       } else {
         allAuthors[dataAuthors]++;
       }
-    /*  */
-
-    /*  */
-
   /* END LOOP: for every article: */
   }
-  console.log('allAuthors: ' + allAuthors);
+  /* find right column authors list wrapper and create constant authorsLinksList  */
   const authorsLinksList = document.querySelector(optAuthorsListSelector);
+  /* create allAuthorsHTML as an empty string  */
   let allAuthorsHTML = '';
+  /* START LOOP: for every author: */
   for(let author in allAuthors){
-    /* [NEW] generate code of a link and add it to allTagsHTML: */
-    allAuthorsHTML += '<li><a href="#">' + author + '<a></li>';
+    /* generate code of a link and add it to allAuthorsHTML: */
+    allAuthorsHTML += '<li><a href="#">' + author + ' (' + allAuthors[author] + ')<a></li>';
   }
+  /* add html code from allAuthorsHTML to the right column: */
   authorsLinksList.innerHTML = allAuthorsHTML;
 }
 
