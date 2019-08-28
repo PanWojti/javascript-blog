@@ -246,14 +246,19 @@ function generateAuthors(){
   /* find right column authors list wrapper and create constant authorsLinksList  */
   const authorsLinksList = document.querySelector(opt.authorsListSelector);
   /* create allAuthorsHTML as an empty string  */
-  let allAuthorsHTML = '';
+  /*let allAuthorsHTML = '';*/
+  const allAuthorsData = {authors: []};
   /* START LOOP: for every author: */
   for(let author in allAuthors){
     /* generate code of a link and add it to allAuthorsHTML: */
-    allAuthorsHTML += '<li><a href="#">' + author + ' (' + allAuthors[author] + ')<a></li>';
+    /*allAuthorsHTML += '<li><a href="#">' + author + ' (' + allAuthors[author] + ')<a></li>';*/
+    allAuthorsData.authors.push({
+      author: author,
+      count: allAuthors[author]
+    });
   }
   /* add html code from allAuthorsHTML to the right column: */
-  authorsLinksList.innerHTML = allAuthorsHTML;
+  authorsLinksList.innerHTML = templates.authorsListLink(allAuthorsData);
 }
 
 generateAuthors();
